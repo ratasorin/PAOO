@@ -1,14 +1,11 @@
 #include "calculator/Calculator.h"
 #include <iostream>
 
-using namespace std;
-
 int main() {
-    const double a = 6.0;
-    const double b = 3.0;
+    const double width = 6.0;
+    const double height = 3.0;
 
-    cout << a << " + " << b << " = " << Calculator::add(a, b) << '\n';
-    cout << a << " * " << b << " = " << Calculator::multiply(a, b) << '\n';
-
-    return 0;
+    std::cout << "Rectangle: " << width << " x " << height << '\n';
+    std::cout << "Area: " << Calculator::rectangleArea(width, height) << '\n';
+    std::cout << "Perimeter: " << Calculator::rectanglePerimeter(width, height) << '\n';
 }

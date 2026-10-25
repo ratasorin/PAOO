@@ -3,8 +3,8 @@
 
 namespace Calculator {
 
-double add(double a, double b);
-double multiply(double a, double b);
+double rectangleArea(double width, double height);
+double rectanglePerimeter(double width, double height);
 
-} 
-#endif 
+}
+#endif
