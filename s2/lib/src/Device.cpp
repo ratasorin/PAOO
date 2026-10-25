@@ -1,4 +1,5 @@
 #include "lab/Device.h"
+#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 #include <utility>
@@ -12,6 +13,38 @@ Device::Device(std::string name, std::size_t capacity)
 Device::~Device() {
     std::cout << "Destroyed device: " << name_ << '\n';
     delete[] readings_;
+}
+Device::Device(const Device& other)
+    : name_(other.name_), capacity_(other.capacity_), size_(other.size_),
+      readings_(capacity_ ? new double[capacity_]{} : nullptr) {
+    if (size_) std::copy_n(other.readings_, size_, readings_);
+    std::cout << "Copied device: " << name_ << '\n';
+}
+Device::Device(Device&& other) noexcept
+    : name_(std::move(other.name_)), capacity_(other.capacity_), size_(other.size_),
+      readings_(other.readings_) {
+    other.readings_ = nullptr;
+    other.size_ = other.capacity_ = 0;
+    std::cout << "Moved device: " << name_ << '\n';
+}
+Device& Device::operator=(const Device& other) {
+    if (this != &other) {
+        Device copy(other);
+        *this = std::move(copy);
+    }
+    return *this;
+}
+Device& Device::operator=(Device&& other) noexcept {
+    if (this != &other) {
+        delete[] readings_;
+        name_ = std::move(other.name_);
+        capacity_ = other.capacity_;
+        size_ = other.size_;
+        readings_ = other.readings_;
+        other.readings_ = nullptr;
+        other.size_ = other.capacity_ = 0;
+    }
+    return *this;
 }
 void Device::addReading(double value) {
     if (size_ == capacity_) throw std::out_of_range("Device capacity reached");
